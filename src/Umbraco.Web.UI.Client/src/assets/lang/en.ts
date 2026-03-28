@@ -20,6 +20,7 @@ export default {
 		chooseWhereToCopy: 'Choose where to copy',
 		chooseWhereToImport: 'Choose where to import',
 		chooseWhereToMove: 'Choose where to move',
+		clear: 'Clear',
 		copy: 'Duplicate',
 		copyTo: 'Duplicate to',
 		create: 'Create',
@@ -235,6 +236,8 @@ export default {
 	collection: {
 		noItemsTitle: 'No items',
 		addCollectionConfiguration: 'Add collection',
+		cardViewLabel: 'Cards',
+		tableViewLabel: 'Table',
 	},
 	content: {
 		isPublished: 'Is Published',
@@ -402,6 +405,12 @@ export default {
 		clickToUpload: 'Click to upload',
 		orClickHereToUpload: 'or click here to choose files',
 		disallowedFileType: 'Cannot upload this file, it does not have an approved file type',
+		disallowedFileExtension: (extension: string) =>
+			`Cannot upload .${extension} files as no media type supports this file type`,
+		disallowedMediaTypeNotAllowedHere: (extension: string, mediaTypeName: string) =>
+			`Cannot upload .${extension} files here as the associated ${mediaTypeName} media type is not allowed at this location`,
+		disallowedMediaTypesNotAllowedHere: (extension: string, mediaTypeNames: string) =>
+			`Cannot upload .${extension} files here as the associated media types (${mediaTypeNames}) are not allowed at this location`,
 		disallowedMediaType: "Cannot upload this file, the media type with alias '%0%' is not allowed here",
 		invalidFileName: 'Cannot upload this file, it does not have a valid file name',
 		invalidFileSize: 'Cannot upload this file, it is too large',
@@ -413,6 +422,8 @@ export default {
 		fileSecurityValidationFailure: 'One or more file security validations have failed',
 		moveToSameFolderFailed: 'Parent and destination folders cannot be the same',
 		uploadNotAllowed: 'Upload is not allowed in this location.',
+		uploadValidationFailed: (mediaTypeName: string) =>
+			`The ${mediaTypeName} media type has one or more required properties. It will need to be uploaded individually via the 'Create' menu`,
 	},
 	member: {
 		'2fa': 'Two-Factor Authentication',
@@ -546,7 +557,11 @@ export default {
 		confirmremoveusageof: 'Are you sure you want to remove the usage of <strong>%0%</strong>',
 		confirmlogout: 'Are you sure?',
 		confirmSure: 'Are you sure?',
+		cannotTrashWhenReferenced: (name: string) =>
+			`<strong>${name}</strong> cannot be moved to the Recycle Bin because it is referenced by other items.`,
 		confirmTrash: (name: string) => `Are you sure you want to move <strong>${name}</strong> to the Recycle Bin?`,
+		cannotBulkTrashWhenReferenced: (total: number) =>
+			`The selected <strong>${total} ${total === 1 ? 'item' : 'items'}</strong> cannot be moved to the Recycle Bin because at least one item is referenced by other content.`,
 		confirmBulkTrash: (total: number) =>
 			`Are you sure you want to move <strong>${total} ${total === 1 ? 'item' : 'items'}</strong> to the Recycle Bin?`,
 		confirmBulkDelete: (total: number) =>
@@ -1294,6 +1309,11 @@ export default {
 		paSelectMembers: 'Select the members who have access to the page <strong>%0%</strong>',
 		paMembers: 'Specific members protection',
 		paMembersHelp: 'If you wish to grant access to specific members',
+		paProtectedByAncestor: 'Public Access settings are inherited from an ancestor page.',
+		psHeadlineSetup: 'Setup Public Access',
+		psHeadlineEdit: 'Edit Public Access',
+		psActionSetup: 'Setup',
+		psActionEdit: 'Edit',
 	},
 	publish: {
 		contentPublishedFailedIsTrashed: '%0% could not be published because the item is in the recycle bin.',
@@ -1344,6 +1364,8 @@ export default {
 		configurationTitle: 'Dynamic Root Query',
 		pickDynamicRootOriginTitle: 'Pick origin',
 		pickDynamicRootOriginDesc: 'Define the origin for your Dynamic Root Query',
+		originContentRootTitle: 'Content Root',
+		originContentRootDesc: 'Root of the content tree',
 		originRootTitle: 'Root',
 		originRootDesc: 'Root node of this editing session',
 		originParentTitle: 'Parent',
@@ -1415,9 +1437,9 @@ export default {
 		changes: 'Changes',
 		created: 'Created',
 		currentVersion: 'Current version',
-		diffHelp:
-			'This shows the differences between the current (draft) version and the selected version<br /><del>Red text</del> will be removed in the selected version, <ins>green text</ins> will be added',
-		noDiff: 'There are no differences between the current (draft) version and the selected version',
+		showDiff: 'Show differences between the current (draft) version and the selected version.',
+		diffHelp: '<del>Red text</del> will be removed in the selected version, <ins>green text</ins> will be added.',
+		noDiff: 'There are no differences between the current (draft) version and the selected version.',
 		documentRolledBack: 'Document has been rolled back',
 		headline: 'Select a version to compare with the current version',
 		htmlHelp:
@@ -1455,6 +1477,7 @@ export default {
 		tab: 'Tab',
 		tabname: 'Tab Title',
 		tabs: 'Tabs',
+		changeIcon: 'Change icon',
 		contentTypeEnabled: 'Master Content Type enabled',
 		contentTypeUses: 'This Content Type uses',
 		noPropertiesDefinedOnTab:
@@ -1613,6 +1636,7 @@ export default {
 		tabRules: 'Editor',
 	},
 	template: {
+		productionMode: 'Production Mode',
 		runtimeModeProduction: 'Content is not editable when using runtime mode <code>Production</code>.',
 		deleteByIdFailed: 'Failed to delete template with ID %0%',
 		edittemplate: 'Edit template',
@@ -1823,6 +1847,7 @@ export default {
 		confirmDeleteTabNotice: 'This will also delete all items below this tab.',
 		confirmDeleteGroupNotice: 'This will also delete all items below this group.',
 		addTab: 'Add tab',
+		deleteTab: 'Delete tab',
 		convertToTab: 'Convert to tab',
 		tabDirectPropertiesDropZone: 'Drag properties here to place directly on the tab',
 		removeChildNode: 'You are removing the child node',
@@ -2031,7 +2056,7 @@ export default {
 		},
 		changePassword: 'Change your password',
 		changePhoto: 'Change photo',
-		configureMfa: 'Configure MFA',
+		configureMfa: 'Configure 2FA',
 		emailRequired: 'Required - enter an email address for this user',
 		emailDescription: (usernameIsEmail: boolean) => {
 			return usernameIsEmail
@@ -2045,6 +2070,7 @@ export default {
 		noLockouts: "hasn't been locked out",
 		noPasswordChange: "The password hasn't been changed",
 		confirmNewPassword: 'Confirm new password',
+		confirmPassword: 'Confirm password',
 		changePasswordDescription:
 			"You can change your password for accessing the Umbraco backoffice by filling out the form below and click the 'Change Password' button",
 		contentChannel: 'Content Channel',
@@ -2149,7 +2175,7 @@ export default {
 		userNotInGroup: "The user is not in group '%0%'",
 		userPermissions: 'User permissions',
 		usergroup: 'User group',
-		usergroups: 'User groups',
+		usergroups: 'User Groups',
 		userInvited: 'has been invited',
 		userInvitedSuccessHelp: 'An invitation has been sent to the new user with details about how to log in to Umbraco.',
 		userinviteWelcomeMessage:
@@ -2877,6 +2903,10 @@ export default {
 		resetUrlHeadline: 'Reset URL?',
 		resetUrlMessage: 'Are you sure you want to reset this URL?',
 		resetUrlLabel: 'Reset',
+		selectLanguageHint: 'Choose a language for the link',
+		selectLanguageDefault: "Auto (visitor's language)",
+		configCultureSpecificDocumentLinksLabel: 'Culture-specific document links',
+		configCultureSpecificDocumentLinksDescription: 'Enable specifying a culture when linking to documents.',
 	},
 	missingEditor: {
 		title: 'This property type is no longer available.',
